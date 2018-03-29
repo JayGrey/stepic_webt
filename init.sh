@@ -23,7 +23,7 @@ chmod -R 755 /home/box/web/public
 ln -s /home/box/web/etc/nginx.conf /etc/nginx/sites-enabled/test.conf
 
 # copy gunicorn configuration
-ln -s /home/box/web/etc/hello.py /etc/nginx/sites-enabled/hello.py
+ln -s /home/box/web/etc/hello.py /etc/gunicorn.d/hello.py
 
 
 /etc/init.d/gunicorn restart
