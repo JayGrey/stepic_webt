@@ -2,7 +2,7 @@ CONFIG = {
         'mode': 'wsgi',
         'user': 'www-data',
         'group': 'www-data',
-        'python': '/usr/bin/python',
+        'working_dir': '/etc/gunicorn.d/',
         'args': (
             '--bind=0.0.0.0:8080',
             '--workers=2',
