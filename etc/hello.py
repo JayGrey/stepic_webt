@@ -13,7 +13,7 @@ CONFIG = {
 
 def format_body(query):
     result = '';
-    for token in query.split('&')
+    for token in query.split('&'):
         result += token
         result += '\r\n'
     return  result
