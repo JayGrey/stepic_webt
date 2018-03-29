@@ -14,8 +14,8 @@ rm /home/box/web/public/js/.empty  2> /dev/null
 # set access rigts on folders
 chown -R www-data /home/box/web/uploads
 chown -R www-data /home/box/web/public 
-chmod -R 644 /home/box/web/uploads
-chmod -R 644 /home/box/web/public
+chmod -R 755 /home/box/web/uploads
+chmod -R 755 /home/box/web/public
 
 # copy nginx configuration
 ln -s /home/box/web/etc/nginx.conf /etc/nginx/sites-enabled/test.conf
