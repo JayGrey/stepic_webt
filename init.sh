@@ -27,7 +27,9 @@ ln -s /home/box/web/etc/nginx.conf /etc/nginx/sites-enabled/test.conf
 mkdir /home/box/etc
 chmod -R 755 /home/box/etc
 cp /home/box/web/etc/hello.py /home/box/etc
+cp /home/box/web/etc/g_django.py /home/box/etc
 ln -s /home/box/web/etc/hello.py /etc/gunicorn.d/hello.py
+ln -s /home/box/web/etc/g_django.py /etc/gunicorn.d/g_django.py
 
 # restart servers
 /etc/init.d/gunicorn restart
