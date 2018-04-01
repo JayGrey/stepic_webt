@@ -36,6 +36,5 @@ ln -s /home/box/web/etc/g_django.py /etc/gunicorn.d/g_django.py
 /etc/init.d/gunicorn restart
 /etc/init.d/nginx restart
 
-
 # init mysql
 mysql -uroot < ./etc/init_db.sql
