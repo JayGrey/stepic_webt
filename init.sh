@@ -38,3 +38,5 @@ ln -s /home/box/web/etc/g_django.py /etc/gunicorn.d/g_django.py
 
 # init mysql
 mysql -uroot < ./etc/init_db.sql
+python ./ask/manage.py makemigrations
+python ./ask/manage.py migrate
