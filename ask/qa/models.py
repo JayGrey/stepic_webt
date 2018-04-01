@@ -21,6 +21,8 @@ class Question(models.Model):
     author = models.ForeignKey(User)
     likes = models.ManyToManyField(User, related_name='likes')
 
+    objects = QuestionManager()
+
     def __str__(self):
         return '(title={}, text={}, added_at={}, rating={})'.format(
             self.title, self.text, self.added_at, self.rating)
