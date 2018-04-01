@@ -83,6 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
             'read_default_file': '/home/box/web/etc/mysql.cfg',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
         },
     }
 }
