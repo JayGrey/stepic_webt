@@ -1,18 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, Http404
 
+from qa.models import Question
 
 def placeholder(request, *args, **kwargs):
-    return HttpResponse('OK')
+    return HttpResponse('placeholder page')
 
 def qa_home(request):
-    return HttpResponse('home page')
+    questions = Question.objects.new()
+    return render(request, 'qa/home.html', {'questions': questions,})
 
 def qa_popular(request):
-    return HttpResponse('popular page')
+    questions = Question.objects.popular()
+    return render(request, 'qa/home.html', {'questions': questions,})
 
 def qa_question(request, id=None):
-    if id is None:
-        raise Http404("qestion is not set")
-
-    return HttpResponse('question page: ' + id)
+    question = get_object_or_404(Question, pk=id)
+    return render(request, 'qa/detail.html', {'question': question,})
