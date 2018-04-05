@@ -16,7 +16,7 @@ class QuestionManager(models.Manager):
 class Question(models.Model):
     title = models.CharField(max_length=32)
     text = models.TextField()
-    added_at = models.DateField(default=timezone.now)
+    added_at = models.DateTimeField(default=timezone.now)
     rating = models.IntegerField(default=0)
     author = models.ForeignKey(User)
     likes = models.ManyToManyField(User, related_name='likes')
@@ -30,7 +30,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.TextField()
-    added_at = models.DateField(default=timezone.now)
+    added_at = models.DateTimeField(default=timezone.now)
     question = models.ForeignKey(Question)
     author = models.ForeignKey(User)
 
