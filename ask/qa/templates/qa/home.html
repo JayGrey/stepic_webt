@@ -3,9 +3,10 @@
 {% block title %}QA - Home{% endblock %}
 
 {% block body %}
+
 {% for question in questions %}
 <p>
-    <a href="{% url 'question' id=question.id %}">{{ question.title }}</a>    
+    <a href="{% url 'question' id=question.id %}">{{ question.title }}</a>
 </p>
 {% endfor %}
 {% endblock %}
