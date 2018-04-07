@@ -19,7 +19,7 @@ class Question(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(default=timezone.now)
     rating = models.IntegerField(default=0)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, null=True)
     likes = models.ManyToManyField(User, related_name='likes')
 
     objects = QuestionManager()
@@ -36,7 +36,7 @@ class Answer(models.Model):
     text = models.TextField()
     added_at = models.DateTimeField(default=timezone.now)
     question = models.ForeignKey(Question)
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, null=True)
 
     def __str__(self):
         return '(text={}, added_at={})'.format(self.text, self.added_at)

@@ -8,11 +8,11 @@ class AskForm(forms.Form):
     text = forms.CharField(label = 'Text', widget=forms.Textarea)
 
     def save(self):
-        user = User.objects.get(pk=1)
+        # user = User.objects.get(pk=1)
         params = {
             'title':self.cleaned_data['title'],
             'text': self.cleaned_data['text'],
-            'author': user
+            # 'author': user
         }
 
         return Question.objects.create(**params)
@@ -32,13 +32,13 @@ class AnswerForm(forms.Form):
         return q_id
 
     def save(self, question):
-        user = User.objects.get(pk=1)
+        # user = User.objects.get(pk=1)
         question = Question.objects.get(pk=self.cleaned_data['question'])
 
         params = {
             'text': self.cleaned_data['text'],
             'question': question,
-            'author': user
+            # 'author': user
         }
 
         return Answer.objects.create(**params)
