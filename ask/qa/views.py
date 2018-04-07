@@ -39,7 +39,7 @@ def qa_question(request, id=None):
             answer = form.save(question)
             return HttpResponseRedirect(answer.question.get_url())
     else:
-        form = AnswerForm(request.POST)
+        form = AnswerForm(initial={'question': question.id})
 
     return render(request, 'qa/question.html',
         {'question': question, 'form': form})

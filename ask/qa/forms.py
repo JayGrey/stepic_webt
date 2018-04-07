@@ -20,9 +20,20 @@ class AskForm(forms.Form):
 
 class AnswerForm(forms.Form):
     text = forms.CharField(label = 'Text', widget=forms.Textarea)
+    question = forms.IntegerField(widget=forms.HiddenInput())
+
+    def clean_question(self):
+        q_id = int(self.cleaned_data['question'])
+        try:
+            question = Question.objects.get(pk=q_id)
+        except Question.DoesNotExist, Question.MultipleObjectsReturned:
+            raise forms.ValidationError("wrong question id")
+
+        return q_id
 
     def save(self, question):
         user = User.objects.get(pk=1)
+        question = Question.objects.get(pk=self.cleaned_data['question'])
 
         params = {
             'text': self.cleaned_data['text'],
