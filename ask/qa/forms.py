@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from qa.models import Question
+from qa.models import Question, Answer
 
 class AskForm(forms.Form):
     title = forms.CharField(label = 'Title', max_length=32)
@@ -20,3 +20,14 @@ class AskForm(forms.Form):
 
 class AnswerForm(forms.Form):
     text = forms.CharField(label = 'Text', widget=forms.Textarea)
+
+    def save(self, question):
+        user = User.objects.get(pk=1)
+
+        params = {
+            'text': self.cleaned_data['text'],
+            'question': question,
+            'author': user
+        }
+
+        return Answer.objects.create(**params)

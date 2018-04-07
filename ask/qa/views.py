@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views.decorators.http import require_GET, require_http_methods
 
-from qa.forms import AskForm
+from qa.forms import AskForm, AnswerForm
 from qa.models import Question
 
 
@@ -29,10 +29,20 @@ def qa_home(request):
         {'questions': questions, 'paginator': paginator})
 
 
-@require_GET
+@require_http_methods(["GET", "POST"])
 def qa_question(request, id=None):
     question = get_object_or_404(Question, pk=id)
-    return render(request, 'qa/detail.html', {'question': question,})
+
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(question)
+            return HttpResponseRedirect(answer.question.get_url())
+    else:
+        form = AnswerForm(request.POST)
+
+    return render(request, 'qa/question.html',
+        {'question': question, 'form': form})
 
 
 @require_http_methods(["GET", "POST"])
