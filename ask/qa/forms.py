@@ -42,3 +42,25 @@ class AnswerForm(forms.Form):
         }
 
         return Answer.objects.create(**params)
+
+class UserForm(forms.Form):
+    username = forms.CharField(label = 'username')
+    email = forms.EmailField()
+    password = forms.CharField(label = 'password', widget=forms.PasswordInput)
+
+    def clean_username(self):
+        try:
+            user = User.objects.get(username=self.cleaned_data['username'])
+            raise forms.ValidationError("user already exists")
+        except User.DoesNotExist:
+            return self.cleaned_data['username']
+
+
+    def save(self):
+        params = {
+            'username': self.cleaned_data['username'],
+            'password': self.cleaned_data['password'],
+            'email': self.cleaned_data['email'],
+        }
+
+        return User.objects.create_user(**params)

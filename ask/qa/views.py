@@ -2,8 +2,9 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.views.decorators.http import require_GET, require_http_methods
+from django.urls import reverse
 
-from qa.forms import AskForm, AnswerForm
+from qa.forms import AskForm, AnswerForm, UserForm
 from qa.models import Question
 
 
@@ -56,3 +57,16 @@ def ask(request):
         form = AskForm()
 
     return render(request, 'qa/ask.html', {'form': form})
+
+
+@require_http_methods(["GET", "POST"])
+def signup(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('home'))
+    else:
+        form = UserForm()
+
+    return render(request, 'qa/signup.html', {'form': form})
