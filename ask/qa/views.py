@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404
@@ -49,12 +48,12 @@ def qa_question(request, id=None):
 
 
 @require_http_methods(["GET", "POST"])
-@login_required
 def ask(request):
     if request.method == 'POST':
         form = AskForm(request.POST)
+        form._user = request.user
         if form.is_valid():
-            question = form.save(request)
+            question = form.save()
             return HttpResponseRedirect(question.get_url())
     else:
         form = AskForm()

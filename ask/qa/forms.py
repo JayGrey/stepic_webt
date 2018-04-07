@@ -9,11 +9,15 @@ class AskForm(forms.Form):
     title = forms.CharField(label = 'Title', max_length=32)
     text = forms.CharField(label = 'Text', widget=forms.Textarea)
 
-    def save(self, request):
+    def clean(self):
+        if not self._user.is_authenticated():
+            raise forms.ValidationError("only authenticated users may leave question")
+
+    def save(self):
         params = {
             'title':self.cleaned_data['title'],
             'text': self.cleaned_data['text'],
-            'author': request.user,
+            'author': self._user,
         }
 
         return Question.objects.create(**params)
