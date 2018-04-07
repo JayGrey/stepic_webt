@@ -1,0 +1,12 @@
+{% extends "qa/base.html" %}
+
+{% block title %}QA - new Question{% endblock %}
+
+{% block body %}
+<h2>Add new question</h2>
+    <form action="{% url 'ask' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_ul }}
+        <input type="submit" value="Save"/>
+    </form>
+{% endblock %}

@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 
 
@@ -26,6 +27,9 @@ class Question(models.Model):
     def __str__(self):
         return '(title={}, text={}, added_at={}, rating={})'.format(
             self.title, self.text, self.added_at, self.rating)
+
+    def get_url(self):
+        return reverse('question', kwargs={'id': self.id})
 
 
 class Answer(models.Model):

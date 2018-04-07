@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
-from django.views.decorators.http import require_GET
+from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.views.decorators.http import require_GET, require_http_methods
 
+from qa.forms import AskForm
 from qa.models import Question
 
 
@@ -32,3 +33,16 @@ def qa_home(request):
 def qa_question(request, id=None):
     question = get_object_or_404(Question, pk=id)
     return render(request, 'qa/detail.html', {'question': question,})
+
+
+@require_http_methods(["GET", "POST"])
+def ask(request):
+    if request.method == 'POST':
+        form = AskForm(request.POST)
+        if form.is_valid():
+            question = form.save()
+            return HttpResponseRedirect(question.get_url())
+    else:
+        form = AskForm()
+
+    return render(request, 'qa/ask.html', {'form': form})
