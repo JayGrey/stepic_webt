@@ -61,14 +61,15 @@ class SignupForm(forms.Form):
             return self.cleaned_data['username']
 
 
-    def save(self):
+    def save(self, request):
         params = {
             'username': self.cleaned_data['username'],
             'password': self.cleaned_data['password'],
             'email': self.cleaned_data['email'],
         }
 
-        return User.objects.create_user(**params)
+        user =  User.objects.create_user(**params)
+        login(request, user)
 
 class LoginForm(forms.Form):
     username = forms.CharField(label = 'username')
