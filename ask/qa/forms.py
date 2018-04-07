@@ -9,12 +9,11 @@ class AskForm(forms.Form):
     title = forms.CharField(label = 'Title', max_length=32)
     text = forms.CharField(label = 'Text', widget=forms.Textarea)
 
-    def save(self):
-        # user = User.objects.get(pk=1)
+    def save(self, request):
         params = {
             'title':self.cleaned_data['title'],
             'text': self.cleaned_data['text'],
-            # 'author': user
+            'author': request.user,
         }
 
         return Question.objects.create(**params)
@@ -33,6 +32,10 @@ class AnswerForm(forms.Form):
 
         return q_id
 
+    def clean(self):
+        if not self._user.is_authenticated():
+            raise forms.ValidationError("only authenticated users may leave answer")
+
     def save(self, question):
         # user = User.objects.get(pk=1)
         question = Question.objects.get(pk=self.cleaned_data['question'])
@@ -40,7 +43,7 @@ class AnswerForm(forms.Form):
         params = {
             'text': self.cleaned_data['text'],
             'question': question,
-            # 'author': user
+            'author': self._user,
         }
 
         return Answer.objects.create(**params)

@@ -37,6 +37,7 @@ def qa_question(request, id=None):
 
     if request.method == 'POST':
         form = AnswerForm(request.POST)
+        form._user = request.user
         if form.is_valid():
             answer = form.save(question)
             return HttpResponseRedirect(answer.question.get_url())
@@ -48,11 +49,12 @@ def qa_question(request, id=None):
 
 
 @require_http_methods(["GET", "POST"])
+@login_required
 def ask(request):
     if request.method == 'POST':
         form = AskForm(request.POST)
         if form.is_valid():
-            question = form.save()
+            question = form.save(request)
             return HttpResponseRedirect(question.get_url())
     else:
         form = AskForm()
