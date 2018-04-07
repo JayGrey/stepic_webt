@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.shortcuts import render, get_object_or_404
 from django.views.decorators.http import require_GET, require_http_methods
 from django.urls import reverse
 
-from qa.forms import AskForm, AnswerForm, UserForm
+from qa.forms import AskForm, AnswerForm, SignupForm, LoginForm
 from qa.models import Question
 
 
@@ -62,11 +63,24 @@ def ask(request):
 @require_http_methods(["GET", "POST"])
 def signup(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('home'))
     else:
-        form = UserForm()
+        form = SignupForm()
 
     return render(request, 'qa/signup.html', {'form': form})
+
+
+@require_http_methods(["GET", "POST"])
+def login(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            form.save(request)
+            return HttpResponseRedirect(reverse('home'))
+    else:
+        form = LoginForm()
+
+    return render(request, 'qa/login.html', {'form': form})

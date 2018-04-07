@@ -1,7 +1,9 @@
 from django import forms
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 
 from qa.models import Question, Answer
+
 
 class AskForm(forms.Form):
     title = forms.CharField(label = 'Title', max_length=32)
@@ -43,7 +45,7 @@ class AnswerForm(forms.Form):
 
         return Answer.objects.create(**params)
 
-class UserForm(forms.Form):
+class SignupForm(forms.Form):
     username = forms.CharField(label = 'username')
     email = forms.EmailField()
     password = forms.CharField(label = 'password', widget=forms.PasswordInput)
@@ -64,3 +66,20 @@ class UserForm(forms.Form):
         }
 
         return User.objects.create_user(**params)
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label = 'username')
+    password = forms.CharField(label = 'password', widget=forms.PasswordInput)
+
+    def clean(self):
+        params = {
+            'username': self.cleaned_data['username'],
+            'password': self.cleaned_data['password'],
+        }
+        user = authenticate(**params)
+        if user is None or not user.is_authenticated():
+            raise forms.ValidationError('username or password is incorrect')
+
+    def save(self, request):
+        user = User.objects.get(username=self.cleaned_data['username'])
+        login(request, user)

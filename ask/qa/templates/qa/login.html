@@ -1,0 +1,11 @@
+{% extends 'qa/base.html' %}
+
+{% block title%}QA - Login{% endblock %}
+
+{% block body %}
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_ul }}
+    <input type="submit" value="Login"/>
+</form>
+{% endblock %}
